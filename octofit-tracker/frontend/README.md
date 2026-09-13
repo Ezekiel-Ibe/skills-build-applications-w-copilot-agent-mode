@@ -1,16 +1,33 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+OctoFit Tracker's presentation tier is a React 19 + Vite app that reads from the Express API tier.
 
-Currently, two official plugins are available:
+## Environment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Define `VITE_CODESPACE_NAME` when running inside Codespaces so the frontend can call the public API URL:
 
-## React Compiler
+```bash
+VITE_CODESPACE_NAME=your-codespace-name
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+For local development outside Codespaces, leave `VITE_CODESPACE_NAME` unset and the frontend will use `http://localhost:8000`.
 
-## Expanding the Oxlint configuration
+Vite loads local overrides from `.env.local`, so a Codespaces setup can use:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+VITE_CODESPACE_NAME=your-codespace-name
+```
+
+API requests are built as `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/[component]/` when the variable is present. The app falls back safely to `http://localhost:8000/api/[component]/` when it is unset.
+
+## Scripts
+
+Run commands from the repository root with `--prefix octofit-tracker/frontend`:
+
+- `npm run dev --prefix octofit-tracker/frontend`
+- `npm run build --prefix octofit-tracker/frontend`
+- `npm run lint --prefix octofit-tracker/frontend`
+
+## API Responses
+
+The frontend accepts direct array responses and paginated response shapes that expose arrays through `data`, `results`, `items`, or `docs`.
